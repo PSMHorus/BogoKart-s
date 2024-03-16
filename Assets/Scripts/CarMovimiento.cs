@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -10,7 +10,7 @@ public class CarMovimiento : MonoBehaviour
     public enum Axel
     {
         Front,
-        rear
+        rear,
     }
     [Serializable]
     public struct wheel
@@ -23,8 +23,12 @@ public class CarMovimiento : MonoBehaviour
 
     public float MaxAcceleration = 30.0f;
     public float breakAcceleration = 50.0f;
+
+
     public float turnSensitive = 1.0f;
     public float maxSteerAnlge = 30.0f;
+
+    public Vector3 _centerOfMass;
 
     public List<wheel> wheels;
 
@@ -33,19 +37,22 @@ public class CarMovimiento : MonoBehaviour
 
     private Rigidbody carRig;
 
-    void Start()
+    void Start()    
     {
         carRig = GetComponent<Rigidbody>(); 
+        carRig.centerOfMass = _centerOfMass;
     }
 
     private void Update()
     {
         GetInput();
+       AnimationWheels();
     }
     void LateUpdate()
     {
         Move();
         Steer();
+        Brake();
     }
 
     void GetInput()
@@ -73,11 +80,39 @@ public class CarMovimiento : MonoBehaviour
                 var _steerAnlge = steerInput * turnSensitive * maxSteerAnlge;
                 wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, _steerAnlge, 0.6f);
             }
-
-
-
         }
     }
+
+    void Brake()
+    {
+        if(Input.GetKey(KeyCode.Space)) 
+        {
+            foreach(  var wheel in wheels)
+            {
+                wheel.wheelCollider.brakeTorque = 300* breakAcceleration * Time.deltaTime;
+            }
+        }
+        else
+        {
+            foreach(var wheel in wheels)
+            {
+                wheel.wheelCollider.brakeTorque = 0;
+            }
+        }
+    }
+
+    void AnimationWheels()
+   {
+       foreach(var wheel in wheels)
+        {
+            Quaternion rot;
+            Vector3 pos;
+            wheel.wheelCollider.GetWorldPose(out pos, out rot);
+            wheel.wheelModel.transform.position = pos;
+            wheel.wheelModel.transform.rotation = rot;
+        }
+    
+   }
 
 
 }
