@@ -73,7 +73,7 @@ public class CarMovimiento : MonoBehaviour
     }
     void Steer()
     {
-        foreach(wheel wheel in wheels)
+        foreach(var wheel in wheels)
         {
             if (wheel.axel == Axel.Front)
             {
@@ -85,18 +85,21 @@ public class CarMovimiento : MonoBehaviour
 
     void Brake()
     {
-        if(Input.GetKey(KeyCode.Space)) 
+        if (Input.GetKey(KeyCode.Space))
         {
-            foreach(  var wheel in wheels)
+            foreach(var wheel in wheels)
             {
-                wheel.wheelCollider.brakeTorque = 300* breakAcceleration * Time.deltaTime;
+                wheel.wheelCollider.brakeTorque=300*breakAcceleration * Time.deltaTime;
+
             }
         }
         else
         {
             foreach(var wheel in wheels)
             {
+
                 wheel.wheelCollider.brakeTorque = 0;
+
             }
         }
     }
