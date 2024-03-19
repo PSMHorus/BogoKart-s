@@ -11,6 +11,8 @@ public class CarMovementVariable : MonoBehaviour
     public float SteerAngle = 20;
     private Vector3 MoveForce;
 
+    private bool IsDrifting =false;
+
     void Update()
     {
         MoveForce += transform.forward * moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
@@ -18,11 +20,32 @@ public class CarMovementVariable : MonoBehaviour
 
 
         float steerInput = Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.up*steerInput*MoveForce.magnitude*SteerAngle*Time.deltaTime);
+        if (Input.GetKey(KeyCode.Space)) 
+        {
+            IsDrifting=true;
+        }
+
+        else 
+        {
+            IsDrifting=false;
+        }
+
+        if (IsDrifting) 
+        {
+            
+            transform.Rotate(Vector3.up * steerInput * SteerAngle * Time.deltaTime);
+        }
+
+        else
+        {
+            MoveForce *= Drag;
+            transform.Rotate(Vector3.up * steerInput * MoveForce.magnitude * SteerAngle * Time.deltaTime);
+        }
+        // transform.Rotate(Vector3.up*steerInput*MoveForce.magnitude*SteerAngle*Time.deltaTime);
 
 
 
-        MoveForce *= Drag;
+        
         MoveForce = Vector3.ClampMagnitude(MoveForce, MaxSpeed);
 
 
