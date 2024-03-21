@@ -486,7 +486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &162818492
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -543,12 +543,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c40268a9ba7f1b49bc8faf2a664f8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velMaxFrente: 100
-  velMaxRetro: 10
-  aceleracion: 10
-  giroSpeed: 100
-  frenado: 10
-  derrapeForce: 50
+  driveWheels: []
+  steerWheels: []
+  maxMotorTorque: 1000
+  maxBrakeTorque: 1000
+  maxSteeringAngle: 45
+  driftTorque: 2000
+  driftKey: 120
 --- !u!1 &190108704
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &262085658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -699,8 +700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3bfd67f37fadbf45acf32000688dcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxAcceleration: 60
-  breakAcceleration: 150
+  MaxAcceleration: 100
+  breakAcceleration: 100
   turnSensitive: 1
   maxSteerAnlge: 30
   _centerOfMass: {x: 0, y: 0, z: 0}
@@ -725,7 +726,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262085657}
   serializedVersion: 4
-  m_Mass: 350
+  m_Mass: 300
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -941,9 +942,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSmoothness: 5
   rotSmoothess: 7
-  moveOffset: {x: 0, y: 3.25, z: -10}
-  rotOffset: {x: 0, y: 3, z: 0}
-  carTarget: {fileID: 162818493}
+  moveOffset: {x: 0, y: 2.2, z: -2.86}
+  rotOffset: {x: 0, y: 0.81, z: 0}
+  carTarget: {fileID: 262085660}
 --- !u!1 &376374585
 GameObject:
   m_ObjectHideFlags: 0
