@@ -4,70 +4,64 @@ using UnityEngine;
 
 public class KartController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public float velMaxFrente = 100f;
-    public float velMaxRetro = 20f;
-    public float aceleracion = 5f;
-    public float giroSpeed = 100f;
-    public float frenado = 10f;
-    public float derrapeForce = 50f;
+    public WheelCollider[] driveWheels;
+    public WheelCollider[] steerWheels;
+    public float maxMotorTorque = 1000f;
+    public float maxBrakeTorque = 1000f;
+    public float maxSteeringAngle = 45f;
+    public float driftTorque = 2000f;
+    public KeyCode driftKey = KeyCode.X;
 
-    private float velocidadActual = 0;
-    private Rigidbody rb;
-    void Start()
+    private bool isDrifting = false;
 
-    {
-        rb =GetComponent<Rigidbody>();
-    }
-
-    private void FixedUpdate()
-    {
-        float inputVertical = Input.GetAxis("Vertical");
-
-        float velMaxActual = inputVertical >= 0 ? velMaxFrente : velMaxRetro;
-
-        if(inputVertical > 0)
-        {
-            velocidadActual += aceleracion * Time.deltaTime;
-        }
-
-        else if (inputVertical < 0) 
-        {
-            velocidadActual -= frenado * Time.deltaTime;
-        }
-        else
-        {
-            if (velocidadActual > 0)
-            {
-                velocidadActual -= frenado * Time.deltaTime;
-            }
-            else if (velocidadActual < 0)
-            {
-                velocidadActual += frenado * Time.deltaTime;
-            }
-        }
-
-
-        velocidadActual = Mathf.Clamp(velocidadActual, -velMaxFrente, velMaxFrente);
-
-        float giro = Input.GetAxis("Horizontal");
-
-        if(rb.velocity.magnitude > 3f)
-        {
-            transform.Rotate(0, giro * giroSpeed * Time.deltaTime, 0);
-        }
-        
-
-        rb.velocity =transform.forward *velocidadActual;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(transform.right * derrapeForce, ForceMode.Impulse);
-        }
-    }
-    // Update is called once per frame
     void Update()
     {
-        
+        float motor = maxMotorTorque * Input.GetAxis("Vertical");
+        float brake = maxBrakeTorque * Mathf.Clamp01(-Input.GetAxis("Vertical"));
+        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+
+        foreach (WheelCollider wheel in driveWheels)
+        {
+            if (!isDrifting)
+            {
+                wheel.motorTorque = motor;
+            }
+            else
+            {
+                wheel.motorTorque = 0;
+            }
+               
+
+            wheel.brakeTorque = brake;
+
+            if (Input.GetKeyDown(driftKey))
+            {
+                isDrifting = true;
+
+
+            }
+                
+            else if (Input.GetKeyUp(driftKey))
+            {
+                isDrifting = false;
+            }
+              
+        }
+
+        foreach (WheelCollider wheel in steerWheels)
+        {
+            wheel.steerAngle = steering;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (isDrifting)
+        {
+            foreach (WheelCollider wheel in driveWheels)
+            {
+                wheel.motorTorque = driftTorque * Input.GetAxis("Vertical");
+            }
+        }
     }
 }
