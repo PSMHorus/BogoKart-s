@@ -680,6 +680,7 @@ GameObject:
   - component: {fileID: 262085660}
   - component: {fileID: 262085659}
   - component: {fileID: 262085658}
+  - component: {fileID: 262085661}
   m_Layer: 0
   m_Name: conjuntoDelCarro
   m_TagString: Untagged
@@ -694,15 +695,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262085657}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3bfd67f37fadbf45acf32000688dcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaxAcceleration: 100
   breakAcceleration: 100
-  turnSensitive: 0.78
-  maxSteerAnlge: 30
+  turnSensitive: 1
+  maxSteerAnlge: 40
   _centerOfMass: {x: 0, y: 0, z: 0}
   wheels:
   - wheelModel: {fileID: 190108704}
@@ -761,6 +762,36 @@ Transform:
   - {fileID: 2005712006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &262085661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262085657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a72ba300239c240a7c8f7c38e2ba66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAcceleration: 100
+  breakAcceleration: 100
+  turnSensitive: 1
+  maxSteerAngle: 40
+  centerOfMass: {x: 0, y: 0, z: 0}
+  wheels:
+  - wheelModel: {fileID: 764913931}
+    wheelCollider: {fileID: 74044957}
+    axel: 0
+  - wheelModel: {fileID: 190108704}
+    wheelCollider: {fileID: 1944155052}
+    axel: 0
+  - wheelModel: {fileID: 1095179037}
+    wheelCollider: {fileID: 841643247}
+    axel: 1
+  - wheelModel: {fileID: 960713660}
+    wheelCollider: {fileID: 1517346125}
+    axel: 1
 --- !u!1 &316326615 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aff4429c7e92b254780ef0c875f307d8,
