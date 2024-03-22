@@ -62,25 +62,24 @@ public class CarMovimiento : MonoBehaviour
     }
     void Move()
     {
-        foreach (wheel wheel in wheels)
+        foreach (var wheel in wheels)
         {
-            wheel.wheelCollider.motorTorque = moveInput * 600 * MaxAcceleration * Time.deltaTime;
-
-        }
+          wheel.wheelCollider.motorTorque = moveInput * 600 * MaxAcceleration * Time.deltaTime;
+        } 
         
 
 
     }
     void Steer()
     {
-        foreach(var wheel in wheels)
+        foreach (var wheel in wheels)
         {
             if (wheel.axel == Axel.Front)
             {
                 var _steerAnlge = steerInput * turnSensitive * maxSteerAnlge;
                 wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, _steerAnlge, 0.6f);
             }
-        }
+        } 
     }
 
     void Brake()
@@ -89,17 +88,14 @@ public class CarMovimiento : MonoBehaviour
         {
             foreach(var wheel in wheels)
             {
-                wheel.wheelCollider.brakeTorque=300*breakAcceleration * Time.deltaTime;
-
+                wheel.wheelCollider.brakeTorque = 800 * breakAcceleration * Time.deltaTime;
             }
         }
         else
         {
             foreach(var wheel in wheels)
             {
-
                 wheel.wheelCollider.brakeTorque = 0;
-
             }
         }
     }
