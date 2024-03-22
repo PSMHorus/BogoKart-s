@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static CarMovimiento;
 
 public class CarMovementVariable : MonoBehaviour
 {
@@ -10,11 +9,9 @@ public class CarMovementVariable : MonoBehaviour
     public float MaxSpeed = 15;
     public float Traction = 1;
     public float SteerAngle = 20;
-    public Vector3 MoveForce;
-    public List<wheel> wheels;
-    public float turnSensitive = 1.0f;
-    public float maxSteerAnlge = 30.0f;
+    private Vector3 MoveForce;
 
+    private bool IsDrifting =false;
 
     void Update()
     {
@@ -22,12 +19,33 @@ public class CarMovementVariable : MonoBehaviour
         transform.position += MoveForce * Time.deltaTime;
 
 
-        float steerInput = Input.GetAxis("Space");   
-        transform.Rotate(Vector3.up*steerInput*MoveForce.magnitude*SteerAngle*Time.deltaTime);
+        float steerInput = Input.GetAxis("Horizontal");
+        if (Input.GetKey(KeyCode.Space)) 
+        {
+            IsDrifting=true;
+        }
 
-       
+        else 
+        {
+            IsDrifting=false;
+        }
+
+        if (IsDrifting) 
+        {
+            
+            transform.Rotate(Vector3.up * steerInput * SteerAngle * Time.deltaTime);
+        }
+
+        else
+        {
+            MoveForce *= Drag;
+            transform.Rotate(Vector3.up * steerInput * MoveForce.magnitude * SteerAngle * Time.deltaTime);
+        }
+        // transform.Rotate(Vector3.up*steerInput*MoveForce.magnitude*SteerAngle*Time.deltaTime);
 
 
+
+        
         MoveForce = Vector3.ClampMagnitude(MoveForce, MaxSpeed);
 
 
@@ -36,11 +54,8 @@ public class CarMovementVariable : MonoBehaviour
         Debug.DrawRay(transform.position,transform.forward * 3,Color.blue);
         MoveForce = Vector3.Lerp(MoveForce.normalized,transform.forward,Traction*Time.deltaTime) *MoveForce.magnitude;
 
-       
-
     }
     
-   
 
 
 

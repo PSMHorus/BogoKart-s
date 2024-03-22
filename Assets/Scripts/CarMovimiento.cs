@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -37,16 +37,16 @@ public class CarMovimiento : MonoBehaviour
 
     private Rigidbody carRig;
 
-    void Start()
+    void Start()    
     {
-        carRig = GetComponent<Rigidbody>();
+        carRig = GetComponent<Rigidbody>(); 
         carRig.centerOfMass = _centerOfMass;
     }
 
     private void Update()
     {
         GetInput();
-        AnimationWheels();
+       AnimationWheels();
     }
     void LateUpdate()
     {
@@ -57,23 +57,23 @@ public class CarMovimiento : MonoBehaviour
 
     void GetInput()
     {
-        moveInput = Input.GetAxis("Vertical");
+        moveInput=Input.GetAxis("Vertical");
         steerInput = Input.GetAxis("Horizontal");
     }
     void Move()
     {
-        foreach (var wheel in wheels)
+        foreach (wheel wheel in wheels)
         {
             wheel.wheelCollider.motorTorque = moveInput * 600 * MaxAcceleration * Time.deltaTime;
 
         }
-
+        
 
 
     }
     void Steer()
     {
-        foreach (var wheel in wheels)
+        foreach(var wheel in wheels)
         {
             if (wheel.axel == Axel.Front)
             {
@@ -87,24 +87,26 @@ public class CarMovimiento : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            foreach (var wheel in wheels)
+            foreach(var wheel in wheels)
             {
-                wheel.wheelCollider.brakeTorque = 500 * breakAcceleration * Time.deltaTime;
+                wheel.wheelCollider.brakeTorque=300*breakAcceleration * Time.deltaTime;
+
             }
         }
         else
         {
-            foreach (var wheel in wheels)
+            foreach(var wheel in wheels)
             {
+
                 wheel.wheelCollider.brakeTorque = 0;
+
             }
         }
-
     }
 
     void AnimationWheels()
-    {
-        foreach (var wheel in wheels)
+   {
+       foreach(var wheel in wheels)
         {
             Quaternion rot;
             Vector3 pos;
@@ -112,8 +114,8 @@ public class CarMovimiento : MonoBehaviour
             wheel.wheelModel.transform.position = pos;
             wheel.wheelModel.transform.rotation = rot;
         }
-
-    }
+    
+   }
 
 
 }
