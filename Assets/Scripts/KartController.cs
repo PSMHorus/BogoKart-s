@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class KartController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public float velMaxFrente = 100f;
-    public float velMaxRetro = 20f;
-    public float aceleracion = 5f;
+    public float velocidadMaxima = 10f;
+    public float aceleracion = 2f;
+    public float frenado = 1f;
+    public float velocidadRetroceso = 5f;
     public float giroSpeed = 100f;
-    public float frenado = 5f; // Reducir la fuerza de frenado durante el derrape
-    public float derrapeForce = 50f;
+    public float fuerzaDerrapeBase = 150f;
+    public float fuerzaGiroDerrape = 200f;
+    public float maxAngleForDrift = 30f; // Máximo ángulo para el derrape
+    public ParticleSystem humoParticulasPrefact;
 
-    private float velocidadActual = 0;
-    private Rigidbody rb;
+    private float velocidadActual = 0f;
     private bool derrapando = false;
+    private ParticleSystem humoParticulas;
+    private Rigidbody rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        humoParticulas = Instantiate(humoParticulasPrefact, transform.position, Quaternion.identity);
+        humoParticulas.Stop();
     }
 
-    private void FixedUpdate()
+    void Update()
     {
+        // Manejo de aceleración y frenado
         float inputVertical = Input.GetAxis("Vertical");
-
-        float velMaxActual = inputVertical >= 0 ? velMaxFrente : velMaxRetro;
-
         if (inputVertical > 0)
         {
             velocidadActual += aceleracion * Time.deltaTime;
@@ -46,55 +49,50 @@ public class KartController : MonoBehaviour
                 velocidadActual += frenado * Time.deltaTime;
             }
         }
+        velocidadActual = Mathf.Clamp(velocidadActual, -velocidadRetroceso, velocidadMaxima);
 
-        velocidadActual = Mathf.Clamp(velocidadActual, -velMaxFrente, velMaxFrente);
-
-        float giro = Input.GetAxis("Horizontal");
-
-        if (rb.velocity.magnitude > 3f && derrapando)
+        // Manejo de la dirección
+        float inputHorizontal = Input.GetAxis("Horizontal");
+        if (rb.velocity.magnitude > 0.1f)
         {
-            Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0, giro * giroSpeed * Time.deltaTime, 0);
-            rb.MoveRotation(Quaternion.Euler(rotation));
-        }
-        else
-        {
-            Quaternion deltaRotation = Quaternion.Euler(0, giro * giroSpeed * Time.deltaTime, 0);
-            rb.MoveRotation(rb.rotation * deltaRotation);
+            transform.Rotate(Vector3.up * inputHorizontal * giroSpeed * Time.deltaTime);
         }
 
-        rb.velocity = transform.forward * velocidadActual;
-
-        if (Input.GetKeyDown(KeyCode.X) && Mathf.Abs(giro) > 0.1f)
+        // Manejo del derrape
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             derrapando = true;
+            humoParticulas.Play();
         }
-        else if (Input.GetKeyUp(KeyCode.X) || Mathf.Abs(giro) < 0.1f)
+        else if (Input.GetKeyUp(KeyCode.Space))
         {
             derrapando = false;
+            humoParticulas.Stop();
         }
 
-        if (inputVertical != 0 || derrapando)
+        if (derrapando && rb.velocity.magnitude > 1f)
         {
-            rb.angularDrag = 0.5f; // Reducir la fricción angular para permitir que derrape mientras acelera o durante el derrape
-        }
-        else
-        {
-            rb.angularDrag = 5f; // Restaurar la fricción angular normal cuando no se está acelerando y no se está derrapando
+            float angle = Vector3.Angle(rb.velocity, transform.forward);
+            if (angle > maxAngleForDrift)
+            {
+                float angleFactor = Mathf.Clamp01((angle - maxAngleForDrift) / (180f - maxAngleForDrift));
+                float driftForce = fuerzaDerrapeBase * angleFactor;
+                rb.AddForce(transform.right * driftForce * inputHorizontal, ForceMode.Force);
+            }
         }
 
-        // Aplicar fuerza de derrape cuando se está derrapando
-        if (derrapando)
-        {
-            rb.AddForce(transform.right * derrapeForce, ForceMode.Force);
-        }
+        // Actualizar la posición de las partículas de humo
+        humoParticulas.transform.position = transform.position;
     }
 
-
-    // Update is called once per frame
-    void Update()
-{
-        
+    void FixedUpdate()
+    {
+        // Aplicar la velocidad al Rigidbody
+        rb.velocity = transform.forward * velocidadActual;
+    }
 }
 
-}
+
+
+
 

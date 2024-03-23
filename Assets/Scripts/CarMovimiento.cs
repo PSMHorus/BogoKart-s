@@ -88,12 +88,12 @@ public class CarMovimiento : MonoBehaviour
         {
             foreach(var wheel in wheels)
             {
-                wheel.wheelCollider.brakeTorque = 800 * breakAcceleration * Time.deltaTime;
+                wheel.wheelCollider.brakeTorque = 1000 * breakAcceleration * Time.deltaTime;
             }
         }
         else
         {
-            foreach(var wheel in wheels)
+            foreach (var wheel in wheels)
             {
                 wheel.wheelCollider.brakeTorque = 0;
             }

@@ -611,12 +611,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c40268a9ba7f1b49bc8faf2a664f8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velMaxFrente: 100
-  velMaxRetro: 10
+  velocidadMaxima: 10
   aceleracion: 10
-  giroSpeed: 100
   frenado: 10
-  derrapeForce: 50
+  velocidadRetroceso: 5
+  giroSpeed: 100
+  fuerzaDerrapeBase: 150
+  fuerzaGiroDerrape: 200
+  maxAngleForDrift: 30
+  humoParticulasPrefact: {fileID: 0}
 --- !u!1 &190108704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,7 +1045,7 @@ MonoBehaviour:
   rotSmoothess: 7
   moveOffset: {x: 0, y: 2.2, z: -5.32}
   rotOffset: {x: 0, y: 1.14, z: 0}
-  carTarget: {fileID: 262085660}
+  carTarget: {fileID: 2006658629625106991}
 --- !u!1 &376374585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,7 +1742,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: cc35a01a5f1329848a73404060b2da3e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2845,7 +2848,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5ca4d55c0f14c6c41931f23c755b8f64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2987,10 +2990,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a72ba300239c240a7c8f7c38e2ba66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAcceleration: 30
-  breakAcceleration: 50
+  maxAcceleration: 70
+  breakAcceleration: 100
   turnSensitive: 1
-  maxSteerAngle: 30
+  maxSteerAngle: 40
   centerOfMass: {x: 0, y: 0, z: 0}
   wheels:
   - wheelModel: {fileID: 1543228807815124566}
@@ -3044,12 +3047,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c40268a9ba7f1b49bc8faf2a664f8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velMaxFrente: 100
-  velMaxRetro: 20
+  velocidadMaxima: 10
   aceleracion: 5
-  giroSpeed: 100
   frenado: 5
-  derrapeForce: 50
+  velocidadRetroceso: 5
+  giroSpeed: 50
+  fuerzaDerrapeBase: 300
+  fuerzaGiroDerrape: 300
+  maxAngleForDrift: 60
+  humoParticulasPrefact: {fileID: 3712240786195406519, guid: 3b4d970e74938ff419f3d9b0b2f48bf7,
+    type: 3}
 --- !u!23 &2013838847246957067
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3072,7 +3079,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5ca4d55c0f14c6c41931f23c755b8f64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3116,7 +3123,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 6dd27ca86a3d1884fba1b4aa14c901c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3168,7 +3175,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5ca4d55c0f14c6c41931f23c755b8f64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3276,7 +3283,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5ca4d55c0f14c6c41931f23c755b8f64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3409,7 +3416,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 6dd27ca86a3d1884fba1b4aa14c901c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
